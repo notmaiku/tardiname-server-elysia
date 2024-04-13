@@ -2,13 +2,13 @@ import { Elysia, t } from "elysia";
 import { cors } from '@elysiajs/cors'
 
 const app = new Elysia()
+  .use(cors({ origin: 'Any' }))
   .get("/", () => 'Default works!')
-  .post('purple', ({ body: { answer } }) => `Answered ${answer}`, {
+  .post('/purple', ({ body }) => `Answered ${body.data[0].answer}`, {
     body: t.Object({
-      answer: t.String()
+      data: t.Array(t.Object({ answer: t.String() }))
     })
   })
-  .use(cors({ origin: '*' }))
   .listen(3000);
 
 console.log(
